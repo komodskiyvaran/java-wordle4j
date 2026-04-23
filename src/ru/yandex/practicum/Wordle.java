@@ -36,7 +36,7 @@ public class Wordle {
         Scanner scan = new Scanner(System.in);
         System.out.println("Введи слово из 5 букв");
         while (!game.isFinished()) {
-            String word = scan.nextLine().trim();
+            String word = WordleDictionary.normalize(scan.nextLine());
             try {
                 if (word.isEmpty()) {
                     String hint = game.getHint();

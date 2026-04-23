@@ -3,7 +3,10 @@ package ru.yandex.practicum;
 import java.io.PrintWriter;
 import java.util.*;
 
+import static ru.yandex.practicum.WordleDictionary.WORD_LENGTH;
+
 public class WordleGame {
+    private static final int MAX_STEPS = 6;
     private final List<String> availableWords;
     private int steps;
     private final WordleDictionary dictionary;
@@ -12,7 +15,7 @@ public class WordleGame {
     private boolean win;
 
     public WordleGame(WordleDictionary dictionary, PrintWriter log) {
-        steps = 6;
+        steps = MAX_STEPS;
         answer = dictionary.getRandomWord();
         this.dictionary = dictionary;
         this.log = log;
@@ -26,7 +29,7 @@ public class WordleGame {
         this.dictionary = dictionary;
         this.log = log;
         this.answer = answer;
-        this.steps = 6;
+        this.steps = MAX_STEPS;
         this.win = false;
         this.availableWords = new ArrayList<>(dictionary.getWords());
     }
@@ -50,15 +53,14 @@ public class WordleGame {
     /**
      * Обработка хода, возвращает маску
      *
-     * @param enteredWord введенное пользователем слово
+     * @param word введенное пользователем слово
      */
-    public String makeGuess(String enteredWord) throws WordNotFoundInDictionaryException, InvalidWordLengthException, GameAlreadyFinishedException {
+    public String makeGuess(String word) throws WordNotFoundInDictionaryException, InvalidWordLengthException, GameAlreadyFinishedException {
         if (isFinished()) {
             throw new GameAlreadyFinishedException("Игра уже завершена!");
         }
 
-        String word = enteredWord.toLowerCase().replace('ё', 'е');
-        if (word.length() != 5) {
+        if (word.length() != WORD_LENGTH) {
             throw new InvalidWordLengthException("Слово состоит не из 5 букв!");
         }
         if (!dictionary.getWords().contains(word)) {
@@ -70,10 +72,10 @@ public class WordleGame {
         availableWords.remove(word);
         filterAvailableWords(word, mask);
 
-        log.println("Ход " + (6 - steps) + ": " + word + " -> " + mask);
+        log.println("Ход " + (MAX_STEPS - steps) + ": " + word + " -> " + mask);
         if (mask.equals("+++++")) {
             win = true;
-            log.println("Победа за " + (6 - steps) + " шагов.");
+            log.println("Победа за " + (MAX_STEPS - steps) + " шагов.");
 
         }
 
@@ -102,14 +104,14 @@ public class WordleGame {
      */
     private void filterAvailableWords(String word, String mask) {
         Set<Character> presentChars = new HashSet<>();
-        for (int i = 0; i < word.length(); i++) {
+        for (int i = 0; i < WORD_LENGTH; i++) {
             char m = mask.charAt(i);
             if (m == '+' || m == '^') {
                 presentChars.add(word.charAt(i));
             }
         }
 
-        for (int i = 0; i < word.length(); i++) {
+        for (int i = 0; i < WORD_LENGTH; i++) {
             final int index = i;
             char c = word.charAt(index);
             char m = mask.charAt(index);

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import static ru.yandex.practicum.WordleDictionary.WORD_LENGTH;
 
 public class WordleDictionaryLoader {
 
@@ -18,8 +19,8 @@ public class WordleDictionaryLoader {
 
             String line;
             while ((line = br.readLine()) != null) {
-                String word = line.trim().toLowerCase().replace('ё', 'е');
-                if (word.length() == 5) {
+                String word = WordleDictionary.normalize(line);
+                if (word.length() == WORD_LENGTH) {
                     listWords.add(word);
                 }
             }

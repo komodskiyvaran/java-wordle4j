@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.yandex.practicum.WordleDictionary.WORD_LENGTH;
+
 
 class WordleTest {
     private WordleDictionary dictionary;
@@ -207,7 +209,7 @@ class WordleTest {
         String hintMask = WordleDictionary.wordComparison(answer, hint);
         String agentMask = WordleDictionary.wordComparison(answer, word);
 
-        for (int i = 0; i < hint.length(); i++) {
+        for (int i = 0; i < WORD_LENGTH; i++) {
             if (agentMask.charAt(i) == '+') {
                 assertEquals('+', hintMask.charAt(i));
             } else if (agentMask.charAt(i) == '^') {
